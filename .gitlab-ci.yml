@@ -14,7 +14,7 @@ variables:
   # thomasweise/docker-texlive-full
   # thomasweise/texlive
   # adnrv/texlive
-  LATEX_IMAGE: listx/texlive:2020
+  LATEX_IMAGE: registry.gitlab.com/islandoftex/images/texlive:latest
 
 build:
   image: $LATEX_IMAGE
