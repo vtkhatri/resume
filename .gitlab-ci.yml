@@ -18,7 +18,8 @@ variables:
   # thomasweise/texlive
   # adnrv/texlive
   LATEX_IMAGE: registry.gitlab.com/islandoftex/images/texlive:latest
-  REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/resume"
+  REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/resume
+  FILENAME: resume
   SRC_FILE: resume.tex
   PDF_FILE: resume.pdf
 
@@ -26,7 +27,7 @@ build:
   stage: build
   image: $LATEX_IMAGE
   script:
-    - latexmk -pdf ${SRC_FILE}
+    - latexmk  -outdir=bin -pdf ${SRC_FILE}
   after_script:
     - cat resume.log
   artifacts:
