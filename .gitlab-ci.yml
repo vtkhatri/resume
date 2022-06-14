@@ -36,3 +36,4 @@ release:
     - echo "running release_job for ${CI_COMMIT_SHORT_SHA}"
   release:
     tag_name: '${CI_COMMIT_SHORT_SHA}'
+    description: '${CI_COMMIT_SHORT_SHA}'
