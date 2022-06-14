@@ -5,7 +5,7 @@ stages:
 
 variables:
   LATEX_IMAGE: registry.gitlab.com/islandoftex/images/texlive:latest
-  REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/resume/0.0.1"
+  REGISTRY_URL: '$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/resume/0.0.1'
   SRC_FILE: resume.tex
   PDF_FILE: resume.pdf
 
@@ -13,7 +13,7 @@ build:
   stage: build
   image: $LATEX_IMAGE
   script:
-    - latexmk -outdir=build -pdf ${SRC_FILE}
+    - latexmk -outdir=build -pdf $SRC_FILE
   artifacts:
     paths:
       - build/
@@ -23,9 +23,9 @@ upload:
   image: curlimages/curl:latest
   script:
     - |
-      echo "uploading to ${REGISTRY_URL}/${PDF_FILE}"
+      echo 'uploading to $REGISTRY_URL/$PDF_FILE'
     - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file build/${PDF_FILE} "${REGISTRY_URL}/${PDF_FILE}"
+      curl --header 'JOB-TOKEN: $CI_JOB_TOKEN' --upload-file build/$PDF_FILE '$REGISTRY_URL/$PDF_FILE'
       
 release:
   # Caution, as of 2021-02-02 these assets links require a login, see:
@@ -34,13 +34,13 @@ release:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
     - |
-      echo "running release for ${CI_COMMIT_SHORT_SHA}"
+      echo 'running release for $CI_COMMIT_SHORT_SHA'
   release:
-    name: 'build ${CI_PIPELINE_IID}'
-    tag_name: '${CI_COMMIT_SHORT_SHA}'
-    description: '${CI_PIPEPLINE_IID} building ${CI_COMMIT_SHORT_SHA} in ${CI_PROJECT_ID}'
+    name: 'build $CI_PIPELINE_IID'
+    tag_name: '$CI_COMMIT_SHORT_SHA'
+    description: '$CI_PIPEPLINE_IID building $CI_COMMIT_SHORT_SHA in $CI_PROJECT_ID'
     assets:
       links:
-        - name: '${PDF_FILE}'
-        - url: '${REGISTRY_URL}/${PDF_FILE}'
-        - filepath: '/${PDF_FILE}'
+        - name: '$PDF_FILE'
+        - url: '$REGISTRY_URL/$PDF_FILE'
+        - filepath: '/$PDF_FILE'
