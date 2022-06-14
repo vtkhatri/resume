@@ -14,9 +14,6 @@ build:
   image: $LATEX_IMAGE
   script:
     - latexmk -outdir=build -pdf ${SRC_FILE}
-  after_script:
-    - ls build/
-    - echo ${CI_PROJECT_ID}
   artifacts:
     paths:
       - build/
@@ -26,9 +23,7 @@ upload:
   image: curlimages/curl:latest
   script:
     - |
-      ls
-    - |
-      ls build
+      echo "uploading to ${REGISTRY_URL}/${PDF_FILE}"
     - |
       curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file build/${PDF_FILE} "${REGISTRY_URL}/${PDF_FILE}"
       
@@ -38,7 +33,6 @@ release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
-    - |
-      release-cli create --name "build ${CI_COMMIT_SHORT_SHA}" \
-        --assets-link "{\"name\":\"${PDF_FILE}\",\"url\":\"${REGISTRY_URL}/${PDF_FILE}\"}"
-
+    - echo "running release_job for ${CI_COMMIT_SHORT_SHA}"
+  release:
+    tag_name: '${CI_COMMIT_SHORT_SHA}'
