@@ -5,7 +5,7 @@ stages:
 
 variables:
   LATEX_IMAGE: registry.gitlab.com/islandoftex/images/texlive:latest
-  REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/resume"
+  REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/resume/0.0.1"
   SRC_FILE: resume.tex
   PDF_FILE: resume.pdf
 
@@ -16,6 +16,7 @@ build:
     - latexmk -outdir=build -pdf ${SRC_FILE}
   after_script:
     - ls build/
+    - echo ${CI_PROJECT_ID}
   artifacts:
     paths:
       - build/
