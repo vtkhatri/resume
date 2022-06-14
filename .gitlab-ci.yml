@@ -13,19 +13,23 @@ build:
   stage: build
   image: $LATEX_IMAGE
   script:
-    - latexmk -outdir=bin -pdf ${SRC_FILE}
+    - latexmk -outdir=build -pdf ${SRC_FILE}
   after_script:
-    - cat resume.log
+    - ls build/
   artifacts:
     paths:
-      - bin/${PDF_FILE}
+      - build/
 
 upload:
   stage: upload
   image: curlimages/curl:latest
   script:
     - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file bin/${PDF_FILE} "${REGISTRY_URL}/${PDF_FILE}"
+      ls
+    - |
+      ls build
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file build/${PDF_FILE} "${REGISTRY_URL}/${PDF_FILE}"
       
 release:
   # Caution, as of 2021-02-02 these assets links require a login, see:
@@ -34,6 +38,6 @@ release:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
     - |
-      release-cli create --name "Release ${CI_COMMIT_SHORT_SHA}" \
+      release-cli create --name "build ${CI_COMMIT_SHORT_SHA}" \
         --assets-link "{\"name\":\"${PDF_FILE}\",\"url\":\"${REGISTRY_URL}/${PDF_FILE}\"}"
 
