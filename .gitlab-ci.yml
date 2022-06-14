@@ -37,7 +37,7 @@ release:
       echo "running release_job for ${CI_COMMIT_SHORT_SHA}"
     - |
       echo release-cli create --name "build ${CI_PIPELINE_IID}" --tag-name ${CI_COMMIT_SHORT_SHA} \
-         --assets-link "{\"name\":\"${PDF_FILE}\", \"url\":\"${REGISTRY_URL}/${PDF_FILE}\"}"
+         --assets-link "{\"name\":\"${PDF_FILE}\", \"url\":\"${REGISTRY_URL}/${PDF_FILE}\", \"link_type\":\"other\", \"filepath\":\"${PDF_FILE}\"}"
     - |
       release-cli create --name "build ${CI_PIPELINE_IID}" --tag-name ${CI_COMMIT_SHORT_SHA} \
-         --assets-link "{\"name\":\"${PDF_FILE}\", \"url\":\"${REGISTRY_URL}/${PDF_FILE}\"}"
+         --assets-link "{\"name\":\"${PDF_FILE}\", \"url\":\"${REGISTRY_URL}/${PDF_FILE}\", \"link_type\":\"other\", \"filepath\":\"${PDF_FILE}\"}"
